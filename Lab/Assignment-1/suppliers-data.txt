@@ -1,0 +1,5 @@
+320,Munir Brothers,0321-1234567,Karachi
+312,Alliance Pharmaceuticals,0313-7654321,Peshawar
+478,Abbot Pharmaceuticals,0300-9876543,Lahore
+657,Sanofi Aventis,0333-5632476,Islamabad
+987,Ferozesons laboratories,0301-1934257,Peshawar

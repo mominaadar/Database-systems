@@ -1,0 +1,7 @@
+1005,Ponstan,100,15,Tablets,312
+1421,Brufen,25,35,Syrup,657
+3215,Avil,122,26,Syrup,478
+1215,Flagyl,42,30,Tablets,987
+7513,Avil,140,20,Injection,478
+1216,Flagyl,10,35,Syrup,987
+1007,Disprin,98,15,Tablets,320

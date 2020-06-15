@@ -1,0 +1,257 @@
+
+1. SELECT FIRST_NAME FROM EMPLOYEES WHERE SALARY = (SELECT MAX(SALARY) FROM EMPLOYEES);
++------------+
+| FIRST_NAME |
++------------+
+| Steven     |
++------------+
+
+
+2. SELECT E.EMPLOYEE_ID, E.FIRST_NAME FROM EMPLOYEES E, JOBS J WHERE E.JOB_ID = J.JOB_ID AND J.JOB_TITLE LIKE '%CLERK' AND SALARY IN (SELECT MAX(SALARY) FROM EMPLOYEES WHERE JOB_ID LIKE '%CLERK');
++-------------+------------+
+| EMPLOYEE_ID | FIRST_NAME |
++-------------+------------+
+|         184 | Nandita    |
++-------------+------------+
+
+
+3. SELECT FIRST_NAME FROM JOBS J, EMPLOYEES E WHERE J.JOB_ID = E.JOB_ID AND JOB_TITLE LIKE '%Accountant' AND SALARY > (SELECT MAX(SALARY) FROM EMPLOYEES WHERE JOB_ID LIKE '%Clerk');
++-------------+
+| FIRST_NAME  |
++-------------+
+| Daniel      |
+| John        |
+| Ismael      |
+| Jose Manuel |
+| Luis        |
+| William     |
++-------------+
+
+
+4. SELECT FIRST_NAME FROM EMPLOYEES E, JOBS J WHERE E.JOB_ID = J.JOB_ID AND J.JOB_TITLE LIKE '%CLERK' AND SALARY > (SELECT MIN(SALARY) FROM EMPLOYEES E, JOBS J WHERE E.JOB_ID = J.JOB_ID AND J.JOB_TITLE = 'Programmer');
+Empty set (0.00 sec)
+
+
+5. SELECT FIRST_NAME FROM EMPLOYEES WHERE SALARY > ALL (SELECT SALARY FROM EMPLOYEES WHERE FIRST_NAME = 'Peter') OR SALARY > (SELECT SALARY FROM EMPLOYEES WHERE FIRST_NAME = 'Lisa');
++------------+
+| FIRST_NAME |
++------------+
+| Steven     |
+| Neena      |
+| Lex        |
+| Nancy      |
+| Den        |
+| John       |
+| Karen      |
+| Alberto    |
+| Gerald     |
+| Eleni      |
+| Clara      |
+| Lisa       |
+| Ellen      |
+| Michael    |
+| Shelley    |
++------------+
+
+
+6. SELECT FIRST_NAME FROM EMPLOYEES E, (SELECT DEPARTMENT_ID, AVG(SALARY) AS AVG_SAL FROM EMPLOYEES GROUP BY DEPARTMENT_ID) SAL WHERE E.DEPARTMENT_ID = SAL.DEPARTMENT_ID AND E.SALARY > SAL.AVG_SAL;
++------------+
+| FIRST_NAME |
++------------+
+| Michael    |
+| Den        |
+| Matthew    |
+| Adam       |
+| Payam      |
+| Shanta     |
+| Kevin      |
+| Renske     |
+| Trenna     |
+| Nandita    |
+| Alexis     |
+| Kelly      |
+| Jennifer   |
+| Sarah      |
+| Britney    |
+| Alexander  |
+| Bruce      |
+| John       |
+| Karen      |
+| Alberto    |
+| Gerald     |
+| Eleni      |
+| Peter      |
+| David      |
+| Peter      |
+| Janette    |
+| Patrick    |
+| Allan      |
+| Clara      |
+| Danielle   |
+| Lisa       |
+| Harrison   |
+| Tayler     |
+| Ellen      |
+| Steven     |
+| Nancy      |
+| Daniel     |
+| Shelley    |
++------------+
+
+
+7. SELECT FIRST_NAME FROM EMPLOYEES E, (SELECT DEPARTMENT_ID, MAX(SALARY) MAX_SAL FROM EMPLOYEES GROUP BY DEPARTMENT_ID) SAL WHERE E.DEPARTMENT_ID = SAL.DEPARTMENT_ID AND E.SALARY = SAL.MAX_SAL;
++------------+
+| FIRST_NAME |
++------------+
+| Jennifer   |
+| Michael    |
+| Den        |
+| Susan      |
+| Adam       |
+| Alexander  |
+| Hermann    |
+| John       |
+| Steven     |
+| Nancy      |
+| Shelley    |
++------------+
+
+
+8. SELECT FIRST_NAME, J.JOB_TITLE FROM EMPLOYEES E, JOBS J, (SELECT DISTINCT JOB_ID JID FROM EMPLOYEES E, DEPARTMENTS D WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND DEPARTMENT_NAME = 'Shipping') D WHERE E.JOB_ID = D.JID AND E.DEPARTMENT_ID = 20;
+Empty set (0.00 sec)
+
+
+9. SELECT FIRST_NAME FROM EMPLOYEES E, (SELECT J.JOB_ID, MAX(SALARY) AS MAX_SAL FROM EMPLOYEES E, JOBS J WHERE E.JOB_ID = J.JOB_ID GROUP BY J.JOB_ID) J WHERE E.JOB_ID = J.JOB_ID AND E.SALARY = J.MAX_SAL;
++------------+
+| FIRST_NAME |
++------------+
+| William    |
+| Shelley    |
+| Jennifer   |
+| Steven     |
+| Neena      |
+| Lex        |
+| Daniel     |
+| Nancy      |
+| Susan      |
+| Alexander  |
+| Michael    |
+| Pat        |
+| Hermann    |
+| Alexander  |
+| Den        |
+| John       |
+| Lisa       |
+| Nandita    |
+| Renske     |
+| Adam       |
++------------+
+
+
+10. SELECT E.FIRST_NAME FROM EMPLOYEES E, (SELECT FIRST_NAME, JOB_ID JID FROM EMPLOYEES WHERE DEPARTMENT_ID = 30) D WHERE E.DEPARTMENT_ID = 20 AND E.JOB_ID = D.JID;
+Empty set (0.00 sec)
+
+
+11. SELECT FIRST_NAME FROM EMPLOYEES E, DEPARTMENTS D WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND DEPARTMENT_NAME = 'Finance';
++-------------+
+| FIRST_NAME  |
++-------------+
+| Nancy       |
+| Daniel      |
+| John        |
+| Ismael      |
+| Jose Manuel |
+| Luis        |
++-------------+
+
+
+12. SELECT FIRST_NAME FROM EMPLOYEES WHERE SALARY > (SELECT MAX(SALARY) FROM EMPLOYEES WHERE DEPARTMENT_ID = 20) AND SALARY > (SELECT MAX(SALARY) FROM EMPLOYEES WHERE DEPARTMENT_ID = 30);
++------------+
+| FIRST_NAME |
++------------+
+| Steven     |
+| Neena      |
+| Lex        |
+| John       |
+| Karen      |
++------------+
+
+
+13. SELECT FIRST_NAME FROM EMPLOYEES E, DEPARTMENTS D, LOCATIONS L WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND D.LOCATION_ID = L.LOCATION_ID AND CITY = 'Sydney';
+Empty set (0.00 sec)
+
+
+14. SELECT E.FIRST_NAME FROM EMPLOYEES E, DEPARTMENTS D, (SELECT FIRST_NAME, JOB_ID JID FROM EMPLOYEES WHERE DEPARTMENT_ID = 10) JD WHERE E.DEPARTMENT_ID = 20 AND E.JOB_ID = JD.JID AND E.DEPARTMENT_ID = D.DEPARTMENT_ID AND DEPARTMENT_NAME = 'Development';
+Empty set (0.00 sec)
+
+
+15. SELECT JOB_ID, JOB_TITLE FROM JOBS J, (SELECT E.JOB_ID SJID, SUM(SALARY) SUM_SAL FROM EMPLOYEES E, JOBS J WHERE E.JOB_ID = J.JOB_ID GROUP BY E.JOB_ID) S WHERE J.JOB_ID = S.SJID AND S.SUM_SAL > J.MAX_SALARY;
++------------+-------------------------------+
+| JOB_ID     | JOB_TITLE                     |
++------------+-------------------------------+
+| AD_VP      | Administration Vice President |
+| FI_ACCOUNT | Accountant                    |
+| IT_PROG    | Programmer                    |
+| PU_CLERK   | Purchasing Clerk              |
+| SA_MAN     | Sales Manager                 |
+| SA_REP     | Sales Representative          |
+| SH_CLERK   | Shipping Clerk                |
+| ST_CLERK   | Stock Clerk                   |
+| ST_MAN     | Stock Manager                 |
++------------+-------------------------------+
+
+
+16. SELECT MAX(SALARY) FROM EMPLOYEES E, (SELECT DEPARTMENT_ID DID, MAX(SALARY) MAX_SAL FROM EMPLOYEES GROUP BY DEPARTMENT_ID) D WHERE E.DEPARTMENT_ID = D.DID AND D.MAX_SAL > 9000 GROUP BY DEPARTMENT_ID;
++-------------+
+| MAX(SALARY) |
++-------------+
+|    13000.00 |
+|    11000.00 |
+|    10000.00 |
+|    14000.00 |
+|    24000.00 |
+|    12000.00 |
+|    12000.00 |
++-------------+
+
+
+17.  SELECT DISTINCT FIRST_NAME FROM EMPLOYEES E, (SELECT DEPARTMENT_ID DID, SALARY SAL FROM EMPLOYEES WHERE DEPARTMENT_ID != 10) S WHERE E.DEPARTMENT_ID = 10 AND SALARY > SAL;
++------------+
+| FIRST_NAME |
++------------+
+| Jennifer   |
++------------+
+
+
+18. SELECT FIRST_NAME FROM EMPLOYEES WHERE JOB_ID = (SELECT E.JOB_ID FROM EMPLOYEES E, DEPARTMENTS D, LOCATIONS L WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND D.LOCATION_ID = L.LOCATION_ID AND CITY = 'Munich');
++------------+
+| FIRST_NAME |
++------------+
+| Hermann    |
++------------+
+
+
+19. SELECT FIRST_NAME, JOB_TITLE, DEPARTMENT_NAME FROM EMPLOYEES E, DEPARTMENTS D, JOBS J WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND E.JOB_ID = J.JOB_ID;
+(LARGE OUTPUT - 106 ROWS)
+
+
+20. SELECT FIRST_NAME, SALARY FROM EMPLOYEES WHERE SALARY < (SELECT MAX(SALARY) FROM EMPLOYEES) ORDER BY SALARY DESC LIMIT 2;
++------------+----------+
+| FIRST_NAME | SALARY   |
++------------+----------+
+| Neena      | 17000.00 |
+| Lex        | 17000.00 |
++------------+----------+
+
+
+21. SELECT D.DEPARTMENT_NAME, COUNT(EMPLOYEE_ID) FROM EMPLOYEES E, DEPARTMENTS D, (SELECT DEPARTMENT_ID DID, COUNT(EMPLOYEE_ID) CNT FROM EMPLOYEES GROUP BY DEPARTMENT_ID) C WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID AND E.DEPARTMENT_ID = C.DID AND CNT < 3 GROUP BY D.DEPARTMENT_NAME;
++------------------+--------------------+
+| DEPARTMENT_NAME  | COUNT(EMPLOYEE_ID) |
++------------------+--------------------+
+| Accounting       |                  2 |
+| Administration   |                  1 |
+| Human Resources  |                  1 |
+| Marketing        |                  2 |
+| Public Relations |                  1 |
++------------------+--------------------+
+

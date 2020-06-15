@@ -1,0 +1,169 @@
+mysql> SELECT PARK_CODE, TICKET_NO, TICKET_TYPE,TICKET_PRICE,TICKET_PRICE+ROUND((TICKET_PRICE*0.1),2) FROM TICKET;
++-----------+-----------+-------------+--------------+------------------------------------------+
+| PARK_CODE | TICKET_NO | TICKET_TYPE | TICKET_PRICE | TICKET_PRICE+ROUND((TICKET_PRICE*0.1),2) |
++-----------+-----------+-------------+--------------+------------------------------------------+
+   |     11001 | Adult       |        24.99 |                                    27.49 |
+   |     11002 | Child       |        14.99 |                                    16.49 |
+   |     11003 | Senior      |        10.99 |                                    12.09 |
+   |     13001 | Child       |        18.99 |                                    20.89 |
+   |     13002 | Adult       |        34.99 |                                    38.49 |
+   |     13003 | Senior      |        20.99 |                                    23.09 |
+   |     67832 | Child       |        18.56 |                                    20.42 |
+   |     67833 | Adult       |        28.67 |                                    31.54 |
+   |     67855 | Senior      |        12.12 |                                    13.33 |
+   |     88567 | Child       |        22.50 |                                    24.75 |
+   |     88568 | Adult       |        42.10 |                                    46.31 |
+| UK3452    |     89720 | Senior      |        10.99 |                                    12.09 |
++-----------+-----------+-------------+--------------+------------------------------------------+
+12 rows in set (0.00 sec)
+
+
+mysql> SELECT PARK_CODE, TICKET_NO, TICKET_TYPE,TICKET_PRICE,TICKET_PRICE+ROUND((TICKET_PRICE*0.1),2) PRICE_INCREASE FROM TICKET;
++-----------+-----------+-------------+--------------+----------------+
+| PARK_CODE | TICKET_NO | TICKET_TYPE | TICKET_PRICE | PRICE_INCREASE |
++-----------+-----------+-------------+--------------+----------------+
+   |     11001 | Adult       |        24.99 |          27.49 |
+   |     11002 | Child       |        14.99 |          16.49 |
+   |     11003 | Senior      |        10.99 |          12.09 |
+   |     13001 | Child       |        18.99 |          20.89 |
+   |     13002 | Adult       |        34.99 |          38.49 |
+   |     13003 | Senior      |        20.99 |          23.09 |
+   |     67832 | Child       |        18.56 |          20.42 |
+   |     67833 | Adult       |        28.67 |          31.54 |
+   |     67855 | Senior      |        12.12 |          13.33 |
+   |     88567 | Child       |        22.50 |          24.75 |
+   |     88568 | Adult       |        42.10 |          46.31 |
+| UK3452    |     89720 | Senior      |        10.99 |          12.09 |
++-----------+-----------+-------------+--------------+----------------+
+12 rows in set (0.00 sec)
+
+
+mysql> SELECT PARK_CODE, TICKET_TYPE, TICKET_PRICE FROM TICKET WHERE TICKET_PRICE > 20;
++-----------+-------------+--------------+
+| PARK_CODE | TICKET_TYPE | TICKET_PRICE |
++-----------+-------------+--------------+
+   | Adult       |        24.99 |
+   | Adult       |        34.99 |
+   | Senior      |        20.99 |
+   | Adult       |        28.67 |
+   | Child       |        22.50 |
+   | Adult       |        42.10 |
++-----------+-------------+--------------+
+6 rows in set (0.03 sec)
+
+
+mysql> SELECT PARK_CODE, TICKET_TYPE, TICKET_PRICE FROM TICKET WHERE TICKET_PRICE < 30;
++-----------+-------------+--------------+
+| PARK_CODE | TICKET_TYPE | TICKET_PRICE |
++-----------+-------------+--------------+
+   | Adult       |        24.99 |
+   | Child       |        14.99 |
+   | Senior      |        10.99 |
+   | Child       |        18.99 |
+   | Senior      |        20.99 |
+   | Child       |        18.56 |
+   | Adult       |        28.67 |
+   | Senior      |        12.12 |
+   | Child       |        22.50 |
+| UK3452    | Senior      |        10.99 |
++-----------+-------------+--------------+
+10 rows in set (0.00 sec)
+
+
+mysql> SELECT PARK_CODE, PARK_NAME, PARK_COUNTRY FROM THEMEPARK WHERE PARK_CODE < 'UK2262';
++-----------+---------------+--------------+
+| PARK_CODE | PARK_NAME     | PARK_COUNTRY |
++-----------+---------------+--------------+
+| FR1001    | FairyLand     | FR           |
+| NL1202    | Efling        | NL           |
+| SP4533    | AdventurePort | SP           |
+| SW2323    | Labyrinthe    | SW           |
++-----------+---------------+--------------+
+4 rows in set (0.04 sec)
+
+
+mysql> SELECT *
+    -> FROM TICKET
+    -> WHERE TICKET_PRICE BETWEEN 30.00 AND 50.00;
++-----------+--------------+-------------+-----------+
+| TICKET_NO | TICKET_PRICE | TICKET_TYPE | PARK_CODE |
++-----------+--------------+-------------+-----------+
+   |  13002 |        34.99 | Adult       | FR1001
+   |  88568 |        42.10 | Adult       | UK3452
++-----------+--------------+-------------+-----------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+mysql> SELECT * FROM THEMEPARK WHERE PARK_COUNTRY <> 'UK';
++-----------+---------------+--------------+--------------+
+| PARK_CODE | PARK_NAME     | PARK_CITY    | PARK_COUNTRY |
++-----------+---------------+--------------+--------------+
+| FR1001    | FairyLand     | PARIS        | FR           |
+| NL1202    | Efling        | NOORD        | NL           |
+| SP4533    | AdventurePort | BARCELONA    | SP           |
+| SW2323    | Labyrinthe    | LAUSANNE     | SW           |
+| ZA1342    | GoldTown      | JOHANNESBURG | ZA           |
++-----------+---------------+--------------+--------------+
+5 rows in set (0.00 sec)
+
+
+mysql> SELECT * FROM SALES WHERE SALE_DATE = '2007-05-18';
++----------------+-----------+------------+
+| TRANSACTION_NO | PARK_CODE | SALE_DATE  |
++----------------+-----------+------------+
+|          12781 | FR1001    | 2007-05-18 |
+|          12782 | FR1001    | 2007-05-18 |
+|          12783 | FR1001    | 2007-05-18 |
+|          12784 | FR1001    | 2007-05-18 |
+|          12785 | FR1001    | 2007-05-18 |
+|          12786 | FR1001    | 2007-05-18 |
+|          34534 | UK3452    | 2007-05-18 |
+|          34535 | UK3452    | 2007-05-18 |
+|          34536 | UK3452    | 2007-05-18 |
+|          34537 | UK3452    | 2007-05-18 |
+|          34538 | UK3452    | 2007-05-18 |
+|          34539 | UK3452    | 2007-05-18 |
+|          34540 | UK3452    | 2007-05-18 |
+|          34541 | UK3452    | 2007-05-18 |
+|          67589 | ZA1342    | 2007-05-18 |
+|          67590 | ZA1342    | 2007-05-18 |
+|          67591 | ZA1342    | 2007-05-18 |
+|          67592 | ZA1342    | 2007-05-18 |
+|          67593 | ZA1342    | 2007-05-18 |
++----------------+-----------+------------+
+19 rows in set (0.02 sec)
+
+
+mysql> SELECT TICKET_PRICE FROM TICKET WHERE TICKET_PRICE BETWEEN 20 AND 30;
++--------------+
+| TICKET_PRICE |
++--------------+
+|        24.99 |
+|        20.99 |
+|        28.67 |
+|        22.50 |
++--------------+
+4 rows in set (0.00 sec)
+
+
+mysql> SELECT ATTRACT_NO, HOUR_RATE, (HOUR_RATE*0.2)+HOUR_RATE AS INCREASED_HOUR_RATE FROM HOURS;
++------------+-----------+---------------------+
+| ATTRACT_NO | HOUR_RATE | INCREASED_HOUR_RATE |
++------------+-----------+---------------------+
+|      10034 |      6.50 |               7.800 |
+|      10034 |      6.50 |               7.800 |
+|      10034 |      6.50 |               7.800 |
+|      30012 |      5.99 |               7.188 |
+|      30044 |      5.99 |               7.188 |
+|      30044 |      5.99 |               7.188 |
+|      30011 |      7.20 |               8.640 |
+|      30012 |      7.20 |               8.640 |
+|      10078 |      8.50 |              10.200 |
+|      10098 |      8.50 |              10.200 |
+|      10098 |      8.50 |              10.200 |
++------------+-----------+---------------------+
+11 rows in set (0.00 sec)

@@ -1,0 +1,116 @@
+
+------------------QUESTION 1--------------------
+
+1.
+a. load data local infile 'D:/emp-data.txt' into table employees fields terminated by ',';
+   load data local infile 'D:/dept-data.txt' into table departments fields terminated by ',';
+
+b. INSERT INTO dept_emp VALUES(2,'D4','2020-05-15','2022-05-15');
+
+c. load data local infile 'D:/sal-data.txt' into table salaries fields terminated by ',';
+
+d. load data local infile 'D:/titles-data.txt' into table titles fields terminated by ',';
+   load data local infile 'D:/dept-mgr-data.txt' into table dept_manager fields terminated by ',';
+
+----------------------------------------------
+2.
+a. UPDATE DEPT_EMP SET DEPT_NO = 'D1' WHERE EMP_NO = 2;
+
+b. UPDATE SALARIES SET SALARY = 100000 WHERE EMP_NO = 4;
+
+c. UPDATE DEPARTMENTS SET DEPT_NAME = 'Transport' WHERE DEPT_NO = 'D3';
+
+d. UPDATE TITLES SET TITLE = 'Head' WHERE EMP_NO = 5;
+
+e. UPDATE EMPLOYEES SET HIRE_DATE = '2020-05-28' WHERE EMP_NO = 2;
+
+--------------------------------------------
+3.
+a. DELETE FROM EMPLOYEES WHERE HIRE_DATE < '2016-02-01';
+
+b. DELETE FROM DEPARTMENTS;
+
+
+
+----------------QUESTION 2----------------
+
+1.
+CREATE DATABASE 'PHARMA';
+USE PHARMA;
+
+----------------------------------------------
+2.
+CREATE TABLE PRODUCTS (
+P_ID INT(4) NOT NULL PRIMARY KEY, 
+P_NAME VARCHAR(20), 
+UNITS INT(5), 
+UNIT_PRICE INT(5), 
+TYPE VARCHAR(20), 
+S_ID INT(5),
+INDEX(S_ID),
+CONSTRAINT FK_PRODUCTS FOREIGN KEY(S_ID) REFERENCES SUPPLIERS(S_ID) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE SUPPLIERS(
+S_ID INT(5) NOT NULL PRIMARY KEY,
+S_NAME VARCHAR(50),
+CONTACT VARCHAR(12),
+CITY VARCHAR(15)
+);
+
+CREATE TABLE ORDERS(
+ORDER_ID INT(4) NOT NULL PRIMARY KEY,
+CUSTOMER_NAME VARCHAR(20),
+ORDER_DATE DATE
+);
+
+CREATE TABLE ORDER_DETAIL(
+P_ID INT(5),
+ORDER_ID INT(4),
+UNITS_PURCHASED INT(5),
+INDEX(P_ID),
+INDEX(ORDER_ID),
+CONSTRAINT PK_ORDER_DETAIL PRIMARY KEY(P_ID,ORDER_ID)
+);
+
+
+--------------------------------------------
+3.
+load data local infile 'D:/order-detail-data.txt' into table ORDER_DETAIL fields terminated by ',';
+load data local infile 'D:/orders-data.txt' into table ORDERS fields terminated by ',';
+load data local infile 'D:/suppliers-data.txt' into table SUPPLIERS fields terminated by ',';
+load data local infile 'D:/products-data.txt' into table PRODUCTS fields terminated by ',';
+
+----------------------------------------------
+
+4.
+UPDATE SUPPLIERS SET S_NAME = 'Muneer Brother' WHERE S_ID = 320;
+
+----------------------------------------------
+5.
+DELETE FROM PRODUCTS WHERE P_NAME = 'Avil' AND TYPE = 'Syrup';
+It doesn't affect order_detail table because P_ID is not Foreign Key in order_detail. It is made Primary Key with combination of ORDER_ID.
+If P_ID was Foreign Key then we would have put some foreign key constraints on it which might have affected order_detail table.
+
+--------------------------------------------
+6.
+UPDATE PRODUCTS SET UNIT_PRICE = 40 WHERE TYPE = 'Tablets';
+
+-------------------------------------------
+7.
+DELETE FROM ORDERS WHERE ORDER_ID = 22;
+It doesn't affect order_detail table because order_id is not a foreign key in order_detail table but is set as primary key with combination of another foreign key.
+
+--------------------------------------------
+8.
+DELETE FROM PRODUCTS;
+DELETE FROM SUPPLIERS;
+DELETE FROM ORDERS;
+DELETE FROM ORDER_DETAIL;
+
+--------------------------------------------
+9.
+DROP TABLE PRODUCTS;
+DROB TABLE SUPPLIERS;
+DROP TABLE ORDERS;
+DROP TABLE ORDER_DETAIL;

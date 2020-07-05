@@ -1,0 +1,259 @@
+
+MOMINA ATIF DAR
+P180030
+
+--------------QUESTION 1
+
+CREATE DATABASE PROPERTY;
+USE PROPERTY;
+
+#1.
+
+CREATE TABLE OWNER(
+OWNERNO VARCHAR(4) NOT NULL PRIMARY KEY,
+FNAME VARCHAR(10),
+LNAME VARCHAR(10),
+ADDRESS VARCHAR(35),
+TELNO VARCHAR(20)
+);
+
+CREATE TABLE PROPERTY(
+PROPERTYNO VARCHAR(4) NOT NULL PRIMARY KEY,
+STREET VARCHAR(20),
+COUNTRY VARCHAR(10),
+TYPE VARCHAR(10),
+ROOMS INT(2),
+RENT INT(4),
+YEARINCOME INT(6),
+OWNERNO VARCHAR(4),
+INDEX(OWNERNO),
+CONSTRAINT FK_PROPERTY FOREIGN KEY(OWNERNO) REFERENCES OWNER(OWNERNO)
+);
+
+CREATE TABLE CLIENT(
+CLIENTNO VARCHAR(4) NOT NULL PRIMARY KEY,
+FNAME VARCHAR(10),
+LNAME VARCHAR(10),
+TELNO VARCHAR(20),
+PREFTYPE VARCHAR(15),
+MAXRENT INT(4)
+);
+
+CREATE TABLE BOOKING(
+CLIENTNO VARCHAR(4),
+PROPERTYNO VARCHAR(4),
+BOOKINGDATE DATE,
+COMMENT VARCHAR(20),
+INDEX(CLIENTNO),
+INDEX(PROPERTYNO),
+CONSTRAINT FK_BOOKING1 FOREIGN KEY(CLIENTNO) REFERENCES CLIENT(CLIENTNO),
+CONSTRAINT FK_BOOKING2 FOREIGN KEY(PROPERTYNO) REFERENCES PROPERTY(PROPERTYNO),
+CONSTRAINT PK_BOOKING PRIMARY KEY(CLIENTNO,PROPERTYNO)
+);
+
+--------------------------------------
+
+#2.
+
+MYSQL> DELIMITER //
+CREATE PROCEDURE DATA_PROPERTY(IN PROPERTYNO VARCHAR(4), IN STREET VARCHAR(20), IN COUNTRY VARCHAR(10), IN TYPE VARCHAR(10), IN ROOMS INT(2), IN RENT INT(4), IN YEARINCOME INT(6), IN OWNERNO VARCHAR(4))
+BEGIN
+INSERT INTO PROPERTY VALUES (PROPERTYNO, STREET, COUNTRY, TYPE, ROOMS, RENT, YEARINCOME, OWNERNO);
+END//
+
+
+CREATE PROCEDURE DATA_OWNER(IN OWNERNO VARCHAR(4), IN FNAME VARCHAR(10), IN LNAME VARCHAR(10), IN ADDRESS VARCHAR(35), IN TELNO VARCHAR(20))
+BEGIN
+INSERT INTO OWNER VALUES (OWNERNO, FNAME, LNAME, ADDRESS, TELNO);
+END//
+
+CREATE PROCEDURE DATA_CLIENT(IN CLIENTNO VARCHAR(4), IN FNAME VARCHAR(10), IN LNAME VARCHAR(10), IN TELNO VARCHAR(20), IN PREFTYPE VARCHAR(15), IN MAXRENT INT (4))
+BEGIN
+INSERT INTO CLIENT VALUES (CLIENTNO, FNAME, LNAME, TELNO, PREFTYPE, MAXRENT);
+END//
+
+CREATE PROCEDURE DATA_BOOKING(IN CLIENTNO VARCHAR(4), IN PROPERTYNO VARCHAR(4), IN BOOKINGDATE DATE, IN COMMENT VARCHAR(20))
+BEGIN
+INSERT INTO BOOKING VALUES (CLIENTNO, PROPERTYNO, BOOKINGDATE, COMMENT);
+END//
+
+CALL DATA_PROPERTY('PA14','16 Holhead','Barbados','Villa',6,500,12000,'CO46');
+CALL DATA_PROPERTY('PG16','5 Novar Dr','Antigua','Appartment',2,400,8000,'CO87');
+CALL DATA_PROPERTY('PG21','18 Dale Rd','St Kitts','Appartment',3,450,9500,'CO40');
+CALL DATA_PROPERTY('PG36','2 Manor Rd','Barbados','Studio',1,475,11075,'CO93');
+CALL DATA_PROPERTY('PG4','6 Lawrence St','Barbados','Villa',4,525,14050,'CO87');
+CALL DATA_PROPERTY('PL94','6 Agryll St','Barbados','Villa',4,550,15000,'CO93');
+CALL DATA_PROPERTY('PG22','8 Agryll St','Barbados','Villa',4,150,15100,'CO93');
+CALL DATA_PROPERTY('PG31','6 Agryll Rd','Tokyo','Studio',5,250,15400,'CO46');
+CALL DATA_PROPERTY('PG6','62 Likewood Rd','Barbados','Villa',6,350,13000,'CO87');
+CALL DATA_PROPERTY('PL42','6 Agryll St','Barbados','Appartment',7,450,12000,'CO40');
+
+CALL DATA_OWNER('CO46','Joe','Keogh','2 Heisen Dr','123456');
+CALL DATA_OWNER('CO87','Carol','Farrel','6 Jeops Rd','456123');
+CALL DATA_OWNER('CO40','Emma','Keogh','3 Justin Dr','3432432');
+CALL DATA_OWNER('CO01','Carol','Justin','4 Keo Rd','343242');
+CALL DATA_OWNER('CO02','Jennifer','Keo','5 Frel Dr','1233432');
+CALL DATA_OWNER('CO03','Carl','Fellay','6 Jim Rd','45612433');
+CALL DATA_OWNER('CO04','James','Kai','6 Heisen Dr','155456');
+CALL DATA_OWNER('CO05','Jim','Frel','8 Achray Rd','4564556');
+CALL DATA_OWNER('CO06','Robert','Stewart','10 Fergus Dr','122346');
+CALL DATA_OWNER('CO07','Heisen','Berg','12 Achray Rd','4121234');
+
+CALL DATA_CLIENT('CR76','John','Kay','134136','Villa',500);
+CALL DATA_CLIENT('CR54','Aline','Stewart','425346','Stuido',550);
+CALL DATA_CLIENT('CR74','Stewart','Aline','134143','Apartment',400);
+CALL DATA_CLIENT('CR62','Johnny','Kayob','141435','Villa',600);
+CALL DATA_CLIENT('CR77','Jamey','Kayal','153613','Stuido',800);
+CALL DATA_CLIENT('CR45','Kayl','Kenny','131333','Apartment',200);
+CALL DATA_CLIENT('CR89','Mike','Ritchie','134145','Villa',590);
+CALL DATA_CLIENT('CR23','Mary','Treager','325413','Villa',980);
+CALL DATA_CLIENT('CR79','James','Dean','165463','Stuido',120);
+CALL DATA_CLIENT('CR34','Rollem','Kay','136653','Villa',470);
+
+
+CALL DATA_BOOKING('CR76','PA14','2007-07-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR54','PG4','2007-08-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR74','PA14','2007-09-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR62','PA14','2007-10-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR77','PG36','2007-11-14','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR45','PG6','2008-01-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR89','PL42','2008-07-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR56','PG31','2009-07-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR79','PA14','2010-07-16','NON SMOKING REQUIRED');
+CALL DATA_BOOKING('CR34','PG16','2010-06-16','NON SMOKING REQUIRED');
+
+---------------------------
+
+#3.
+A. SELECT PROPERTYNO, TYPE, COUNTRY, O.OWNERNO, FNAME, ADDRESS FROM PROPERTY P, OWNER O WHERE P.OWNERNO = O.OWNERNO;
++------------+------------+----------+---------+--------+--------------+
+| PROPERTYNO | TYPE       | COUNTRY  | OWNERNO | FNAME  | ADDRESS      |
++------------+------------+----------+---------+--------+--------------+
+| PA14       | Villa      | Barbados | CO46    | Joe    | 2 Fergus Dr  |
+| PG16       | Appartment | Antigua  | CO87    | Carol  | 6 Achray Rd  |
+| PG21       | Appartment | St Kitts | CO40    | Emma   | 3 Justin Dr  |
+| PG36       | Studio     | Barbados | CO93    | Heisen | 12 Achray Rd |
+| PG4        | Villa      | Barbados | CO87    | Carol  | 6 Achray Rd  |
+| PL94       | Villa      | Barbados | CO93    | Heisen | 12 Achray Rd |
+| PG22       | Villa      | Barbados | CO93    | Heisen | 12 Achray Rd |
+| PG31       | Studio     | Tokyo    | CO46    | Joe    | 2 Fergus Dr  |
+| PG6        | Villa      | Barbados | CO87    | Carol  | 6 Achray Rd  |
+| PL42       | Appartment | Barbados | CO40    | Emma   | 3 Justin Dr  |
++------------+------------+----------+---------+--------+--------------+
+
+B. SELECT DISTINCT PROPERTYNO, STREET, COUNTRY, TYPE FROM PROPERTY P, CLIENT C WHERE P.TYPE = C.PREFTYPE;
++------------+----------------+----------+-------+
+| PROPERTYNO | STREET         | COUNTRY  | TYPE  |
++------------+----------------+----------+-------+
+| PA14       | 16 Holhead     | Barbados | Villa |
+| PG4        | 6 Lawrence St  | Barbados | Villa |
+| PL94       | 6 Agryll St    | Barbados | Villa |
+| PG22       | 8 Agryll St    | Barbados | Villa |
+| PG6        | 62 Likewood Rd | Barbados | Villa |
++------------+----------------+----------+-------+
+
+C. SELECT TYPE, COUNTRY, MIN(RENT) FROM PROPERTY GROUP BY TYPE, COUNTRY;
++------------+----------+-----------+
+| TYPE       | COUNTRY  | MIN(RENT) |
++------------+----------+-----------+
+| Appartment | Antigua  |       400 |
+| Appartment | Barbados |       450 |
+| Appartment | St Kitts |       450 |
+| Studio     | Barbados |       475 |
+| Studio     | Tokyo    |       250 |
+| Villa      | Barbados |       150 |
++------------+----------+-----------+
+
+D. SELECT C.CLIENTNO, C.LNAME, BOOKINGDATE, TYPE, COUNTRY, PREFTYPE FROM PROPERTY P, CLIENT C, BOOKING B WHERE P.PROPERTYNO = B.PROPERTYNO AND C.CLIENTNO = B.CLIENTNO;
++----------+---------+-------------+------------+----------+-----------+
+| CLIENTNO | LNAME   | BOOKINGDATE | TYPE       | COUNTRY  | PREFTYPE  |
++----------+---------+-------------+------------+----------+-----------+
+| CR76     | Kay     | 2007-07-16  | Villa      | Barbados | Villa     |
+| CR54     | Stewart | 2007-08-16  | Villa      | Barbados | Stuido    |
+| CR74     | Aline   | 2007-09-16  | Villa      | Barbados | Apartment |
+| CR62     | Kayob   | 2007-10-16  | Villa      | Barbados | Villa     |
+| CR45     | Kenny   | 2008-01-16  | Villa      | Barbados | Apartment |
+| CR89     | Ritchie | 2008-07-16  | Appartment | Barbados | Villa     |
+| CR79     | Dean    | 2010-07-16  | Villa      | Barbados | Stuido    |
+| CR34     | Kay     | 2010-06-16  | Appartment | Antigua  | Villa     |
+| CR77     | Kayal   | 2007-11-14  | Studio     | Barbados | Stuido    |
+
+E. SELECT PROPERTYNO, STREET, COUNTRY, TYPE, P.OWNERNO FROM PROPERTY P, OWNER O WHERE P.OWNERNO = O.OWNERNO;
++------------+----------------+----------+------------+---------+
+| PROPERTYNO | STREET         | COUNTRY  | TYPE       | OWNERNO |
++------------+----------------+----------+------------+---------+
+| PA14       | 16 Holhead     | Barbados | Villa      | CO46    |
+| PG16       | 5 Novar Dr     | Antigua  | Appartment | CO87    |
+| PG21       | 18 Dale Rd     | St Kitts | Appartment | CO40    |
+| PG36       | 2 Manor Rd     | Barbados | Studio     | CO93    |
+| PG4        | 6 Lawrence St  | Barbados | Villa      | CO87    |
+| PL94       | 6 Agryll St    | Barbados | Villa      | CO93    |
+| PG22       | 8 Agryll St    | Barbados | Villa      | CO93    |
+| PG31       | 6 Agryll Rd    | Tokyo    | Studio     | CO46    |
+| PG6        | 62 Likewood Rd | Barbados | Villa      | CO87    |
+| PL42       | 6 Agryll St    | Barbados | Appartment | CO40    |
++------------+----------------+----------+------------+---------+
+
+F. SELECT C.CLIENTNO, FNAME, LNAME, TELNO FROM CLIENT C, PROPERTY P, BOOKING B WHERE P.PROPERTYNO = B.PROPERTYNO AND B.CLIENTNO = C.CLIENTNO AND TYPE = 'Villa' AND ROOMS = 6;
++----------+---------+-------+--------+
+| CLIENTNO | FNAME   | LNAME | TELNO  |
++----------+---------+-------+--------+
+| CR76     | John    | Kay   | 134136 |
+| CR74     | Stewart | Aline | 134143 |
+| CR62     | Johnny  | Kayob | 141435 |
+| CR79     | James   | Dean  | 165463 |
+| CR45     | Kayl    | Kenny | 131333 |
++----------+---------+-------+--------+
+
+G. SELECT CONCAT(FNAME,LNAME), ADDRESS, TELNO FROM OWNER O, PROPERTY P WHERE O.OWNERNO = P.OWNERNO AND TYPE = 'Villa' OR TYPE = 'Apartment';
++---------------------+--------------+---------+
+| CONCAT(FNAME,LNAME) | ADDRESS      | TELNO   |
++---------------------+--------------+---------+
+| JoeKeogh            | 2 Fergus Dr  | 123456  |
+| CarolFarrel         | 6 Achray Rd  | 456123  |
+| CarolFarrel         | 6 Achray Rd  | 456123  |
+| HeisenBerg          | 12 Achray Rd | 4121234 |
+| HeisenBerg          | 12 Achray Rd | 4121234 |
++---------------------+--------------+---------+
+
+
+-------------------------------
+
+#5.
+A. CREATE USER 'momina'@'localhost' IDENTIFIED BY 'mona123';
+Query OK, 0 rows affected (0.00 sec)
+
+B. CREATE VIEW MOMINA_VILLA AS SELECT * FROM PROPERTY WHERE TYPE = 'Villa' WITH CHECK OPTION;
+Query OK, 0 rows affected (0.05 sec)
+
+C. mysql> GRANT SELECT ON PROPERTY.MOMINA_VILLA TO momina@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT INSERT ON PROPERTY.MOMINA_VILLA TO momina@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT UPDATE ON PROPERTY.MOMINA_VILLA TO momina@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT DELETE ON PROPERTY.MOMINA_VILLA TO momina@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT CREATE ON PROPERTY.* TO momina@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+----------------
+#6.
+set autocommit = 0;
+Query OK, 0 rows affected (0.03 sec)
+
+A. INSERT INTO OWNER VALUES('CO54','MOMINA','DAR','SATELITTE TOWN','1483940');
+Query OK, 1 row affected (0.00 sec)
+
+B. mysql> UPDATE OWNER SET LNAME = 'JENNYN' WHERE OWNERNO = 'CO54';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+C. DELETE FROM OWNER WHERE OWNERNO = 'CO54';
+Query OK, 1 row affected (0.00 sec)
+
+D. By creating a savepoint a after inserting data. Then when I rollback to that savepoint insertion would stay but other operations would be discarded.

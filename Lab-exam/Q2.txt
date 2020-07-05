@@ -1,0 +1,73 @@
+
+MOMINA ATIF DAR
+P180030
+---------------QUESTION 2--------------
+
+
+1. SELECT TEAMID, PLAYER, MDATE FROM GAME, GOAL WHERE GAME.ID = GOAL.MATCHID AND TEAMID = 'RUS';
++--------+--------------------+------------+
+| TEAMID | PLAYER             | MDATE      |
++--------+--------------------+------------+
+| RUS    | Alan Dzagoev       | 2012-06-08 |
+| RUS    | Roman Pavlyuchenko | 2012-06-12 |
++--------+--------------------+------------+
+
+2. SELECT PLAYER, TEAM1, TEAM2 FROM GAME, GOAL WHERE GAME.ID = GOAL.MATCHID AND PLAYER LIKE '%ALAN%';
++--------------+-------+-------+
+| PLAYER       | TEAM1 | TEAM2 |
++--------------+-------+-------+
+| Alan Dzagoev | RUS   | CZE   |
++--------------+-------+-------+
+
+3. SELECT PLAYER, TEAMID, COACH, GTIME FROM GOAL G, ETEAM E WHERE G.TEAMID = E.ID AND GTIME <= 10;
+Empty set (0.00 sec)
+
+4. SELECT MDATE, TEAMNAME FROM ETEAM E, GAME G WHERE E.ID = G.TEAM1 AND COACH LIKE '%Fernando%';
++------------+----------+
+| MDATE      | TEAMNAME |
++------------+----------+
+| 2012-06-12 | Greece   |
++------------+----------+
+
+5. SELECT PLAYER FROM GAME, GOAL WHERE GAME.ID = GOAL.MATCHID AND STADIUM LIKE '%National Stadium, Warsaw%';
++----------------------+
+| PLAYER               |
++----------------------+
+| Robert Lewandowski   |
+| Dimitris Salpingidis |
+| Roman Pavlyuchenko   |
++----------------------+
+
+6. 
+
+7. SELECT TEAMNAME, COUNT(GTIME) AS TOTAL_GOALS FROM GOAL G, ETEAM E WHERE G.TEAMID = E.ID GROUP BY TEAMNAME;
++----------+-------------+
+| TEAMNAME | TOTAL_GOALS |
++----------+-------------+
+| Greece   |           1 |
+| Poland   |           1 |
+| Russia   |           2 |
++----------+-------------+
+
+8. SELECT STADIUM, COUNT(MATCHID) FROM GOAL, GAME WHERE GOAL.MATCHID = GAME.ID GROUP BY STADIUM;
++---------------------------+----------------+
+| STADIUM                   | COUNT(MATCHID) |
++---------------------------+----------------+
+| National Stadium, Warsaw  |              3 |
+| Stadion Miejski (Wroclaw) |              1 |
++---------------------------+----------------+
+
+9. SELECT MATCHID, MDATE, COUNT(MATCHID) FROM GOAL, GAME WHERE GOAL.MATCHID = GAME.ID AND TEAM1 = 'POL' OR TEAM2 = 'POL' GROUP BY MATCHID, MDATE;
++---------+------------+----------------+
+| MATCHID | MDATE      | COUNT(MATCHID) |
++---------+------------+----------------+
+|    1001 | 2012-06-08 |              2 |
+|    1004 | 2012-06-12 |              1 |
++---------+------------+----------------+
+
+10. SELECT MATCHID, MDATE, COUNT(MATCHID) FROM GOAL, GAME WHERE GOAL.MATCHID = GAME.ID AND TEAMID = 'GRE' GROUP BY MATCHID, MDATE;
++---------+------------+----------------+
+| MATCHID | MDATE      | COUNT(MATCHID) |
++---------+------------+----------------+
+|    1001 | 2012-06-08 |              1 |
++---------+------------+----------------+

@@ -1,0 +1,77 @@
+#1
+CREATE INDEX IDX_EMAIL ON USERS (EMAIL);
+Query OK, 10 rows affected (0.10 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+
+#2
+CREATE INDEX IDX_USRNM_PSWD ON USERS(USERNAME, PASSWORD);
+Query OK, 10 rows affected (0.09 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+
+#3
+SHOW INDEX FROM USERS\G;
+*************************** 1. row ***************************
+        Table: users
+   Non_unique: 0
+     Key_name: PRIMARY
+ Seq_in_index: 1
+  Column_name: USER_ID
+    Collation: A
+  Cardinality: 10
+     Sub_part: NULL
+       Packed: NULL
+         Null:
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 2. row ***************************
+        Table: users
+   Non_unique: 1
+     Key_name: IDX_EMAIL
+ Seq_in_index: 1
+  Column_name: EMAIL
+    Collation: A
+  Cardinality: NULL
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 3. row ***************************
+        Table: users
+   Non_unique: 1
+     Key_name: IDX_USRNM_PSWD
+ Seq_in_index: 1
+  Column_name: USERNAME
+    Collation: A
+  Cardinality: NULL
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 4. row ***************************
+        Table: users
+   Non_unique: 1
+     Key_name: IDX_USRNM_PSWD
+ Seq_in_index: 2
+  Column_name: PASSWORD
+    Collation: A
+  Cardinality: NULL
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+4 rows in set (0.00 sec)
+
+
+#4
+Implicit Indexes are those indexes which are formed automatically at back end. For example when user defines a Primary Key while creating a table. Index for Primary Key column is created automatically.
+
+Unique indexes are those which do not allow duplication of data. For example a row of data has been inserted already, if user tries to enter the same value again entered before in a column on which index is created than it won't allow it.

@@ -1,0 +1,120 @@
+CREATE DATABASE PERSON;
+
+USE PERSON;
+
+CREATE TABLE USERS(
+USER_ID INT(2) NOT NULL PRIMARY KEY,
+USERNAME VARCHAR(10),
+PASSWORD VARCHAR(10),
+EMAIL VARCHAR(20)
+);
+
+CREATE TABLE SUMMARY(
+ID_ INT(2) NOT NULL PRIMARY KEY,
+TOTAL_USERS INT(2),
+YAHOO INT(2),
+HOTMAIL INT(2),
+GMAIL INT(2)
+);
+
+INSERT INTO USERS VALUES (1,'abc123','def321','abc123@yahoo.com');
+INSERT INTO USERS VALUES (2,'xyz789','vbn123','xyz789@gmail.com');
+
+INSERT INTO SUMMARY VALUES (1,2,1,0,1);
+
+DELIMITER $$
+
+#1. 
+
+CREATE PROCEDURE INSERT_DATA_IN_SUMMARY(IN ID INT(2), IN TOTAL_USERS INT(2), IN YAHOO INT(2), IN HOTMAIL INT(2), IN GMAIL INT(2))
+BEGIN
+INSERT INTO SUMMARY VALUES(ID, TOTAL_USERS, YAHOO, HOTMAIL, GMAIL);
+END$$
+
+CALL INSERT_DATA_IN_SUMMARY(2,3,1,1,1)$$
+
+SELECT * FROM SUMMARY$$
++-----+-------------+-------+---------+-------+
+| ID_ | TOTAL_USERS | YAHOO | HOTMAIL | GMAIL |
++-----+-------------+-------+---------+-------+
+|   1 |           2 |     1 |       0 |     1 |
+|   2 |           3 |     1 |       1 |     1 |
++-----+-------------+-------+---------+-------+
+
+
+#2.
+
+CREATE PROCEDURE INSERT_DATA_IN_USERS(IN USER_ID INT(2), IN USERNAME VARCHAR(10), IN PASSWORD VARCHAR(10), IN EMAIL VARCHAR(20))
+BEGIN
+INSERT INTO USERS VALUES(USER_ID, USERNAME, PASSWORD, EMAIL);
+END$$
+
+CALL INSERT_DATA_IN_USERS(3,'asd234','rty543','asd234@hotmail.com')$$
+
+select * from users$$
++---------+----------+----------+--------------------+
+| USER_ID | USERNAME | PASSWORD | EMAIL              |
++---------+----------+----------+--------------------+
+|       1 | abc123   | def321   | abc123@yahoo.com   |
+|       2 | xyz789   | vbn123   | xyz789@gmail.com   |
+|       3 | asd234   | rty543   | asd234@hotmail.com |
++---------+----------+----------+--------------------+
+
+#3.
+
+CREATE PROCEDURE AVG_YAHOO(OUT AVG_YAHOO INT)
+BEGIN
+SELECT AVG(YAHOO) FROM SUMMARY;
+END$$
+
+CALL AVG_YAHOO(@AVH_YAHOO)$$
++------------+
+| AVG(YAHOO) |
++------------+
+|     1.0000 |
++------------+
+
+#4.
+
+CREATE PROCEDURE MIN_VAL_GMAIL(OUT MINVAL_GMAIL INT)
+BEGIN
+SELECT MIN(GMAIL) FROM SUMMARY;
+END$$
+
+CALL MIN_VAL_GMAIL(@MINVAL_GMAIL)$$
++------------+
+| MIN(GMAIL) |
++------------+
+|          1 |
++------------+
+
+#5. 
+
+CREATE PROCEDURE MAX_VAL_HOTMAIL(OUT MAX_VAL_HOTMAIL INT)
+BEGIN
+SELECT MAX(HOTMAIL) FROM SUMMARY;
+END$$
+
+CALL MAX_VAL_HOTMAIL(@MAX_VAL_HOTMAIL)$$
++--------------+
+| MAX(HOTMAIL) |
++--------------+
+|            1 |
++--------------+
+
+#6.
+
+CREATE PROCEDURE UPDATE_SUMMARY()
+BEGIN
+UPDATE SUMMARY SET TOTAL_USERS = TOTAL_USERS + 1 WHERE YAHOO < HOTMAIL OR YAHOO = HOTMAIL;
+END$$
+
+CALL UPDATE_SUMMARY()$$
+
+SELECT * FROM SUMMARY$$
++-----+-------------+-------+---------+-------+
+| ID_ | TOTAL_USERS | YAHOO | HOTMAIL | GMAIL |
++-----+-------------+-------+---------+-------+
+|   1 |           2 |     1 |       0 |     1 |
+|   2 |           4 |     1 |       1 |     1 |
++-----+-------------+-------+---------+-------+

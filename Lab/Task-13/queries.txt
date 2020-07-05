@@ -1,0 +1,200 @@
+#1
+SELECT EMP_FNAME, EMP_DOB FROM EMPLOYEE WHERE DAYOFMONTH(EMP_DOB) = '14' ;
++-----------+------------+
+| EMP_FNAME | EMP_DOB    |
++-----------+------------+
+| Arif      | 1969-11-14 |
+| Mirrelle  | 1990-03-14 |
++-----------+------------+
+
+
+#2
+SELECT EMP_FNAME, DATEDIFF('2008-11-25',EMP_DOB) AS APPROX_AGE FROM EMPLOYEE;
++-----------+------------+
+| EMP_FNAME | APPROX_AGE |
++-----------+------------+
+| Emma      |      13312 |
+| Marshel   |      11209 |
+| Arif      |      14256 |
+| Anne      |      12459 |
+| Enrica    |      10244 |
+| Mirrelle  |       6831 |
+| Gemma     |      14897 |
+| Momina    |       3699 |
++-----------+------------+
+
+
+#3
+SELECT CONCAT((SELECT SUBSTR(EMP_PHONE,1,3)),(SELECT LOWER(SUBSTR(EMP_FNAME,1,2)))) AS USER_PASSWORDS FROM EMPLOYEE;
++----------------+
+| USER_PASSWORDS |
++----------------+
+| 324em          |
+| 324ma          |
+| 675ar          |
+| 898an          |
+| 504en          |
+| 890mi          |
+| 324ge          |
+| 123mo          |
++----------------+
+
+
+#4
+SELECT PARK_NAME, DATE_FORMAT(SALE_DATE,'%D %b %Y') AS DATE FROM SALES, THEMEPARK WHERE SALES.PARK_CODE = THEMEPARK.PARK_CODE GROUP BY PARK_NAME, DATE;
++--------------+---------------+
+| PARK_NAME    | DATE          |
++--------------+---------------+
+| FairyLand    | 18th May 2007 |
+| GoldTown     | 18th May 2007 |
+| PleasureLand | 18th May 2007 |
++--------------+---------------+
+
+
+#5
+SELECT DISTINCT(DATE_FORMAT(SALE_DATE, '%a %e %m %y')) AS DATE FROM SALES;
++--------------+
+| DATE         |
++--------------+
+| Fri 18 05 07 |
++--------------+
+
+
+#6
+USE NUTEC;
+
+SELECT * FROM REG_RECORD;
++---------+--------+------------+------+--------------------+
+| rollno  | name   | email      | dept | event              |
++---------+--------+------------+------+--------------------+
+| P170016 | Ahmad  | p170016@nu | EE   | Debate Competition |
+| p170020 | Ahmer  | p170020@nu | CS   | Ludo               |
+| p180010 | Ahmed  | p180010@nu | CS   | Sparlay            |
+| P180016 | Ammar  | p180016@nu | EE   | Tekken 5           |
+| p180030 | Momina | p180030@nu | CS   | Speed Programming  |
+| p180037 | Affan  | p180037    | CS   | Tekken 5           |
++---------+--------+------------+------+--------------------+
+
+SET AUTOCOMMIT = 0;
+
+INSERT INTO REG_RECORD VALUES('p180098','Saad','p180098@nu','CS','Ludo');
+
+INSERT INTO REG_RECORD VALUES('p160080','Asad','p160080@nu','EE','GTA');
+
+SELECT * FROM REG_RECORD;
++---------+--------+------------+------+--------------------+
+| rollno  | name   | email      | dept | event              |
++---------+--------+------------+------+--------------------+
+| p160080 | Asad   | p160080@nu | EE   | GTA                |
+| P170016 | Ahmad  | p170016@nu | EE   | Debate Competition |
+| p170020 | Ahmer  | p170020@nu | CS   | Ludo               |
+| p180010 | Ahmed  | p180010@nu | CS   | Sparlay            |
+| P180016 | Ammar  | p180016@nu | EE   | Tekken 5           |
+| p180030 | Momina | p180030@nu | CS   | Speed Programming  |
+| p180037 | Affan  | p180037    | CS   | Tekken 5           |
+| p180098 | Saad   | p180098@nu | CS   | Ludo               |
++---------+--------+------------+------+--------------------+
+
+UPDATE REG_RECORD SET NAME = 'Sahar' WHERE ROLLNO = 'p180010';
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+UPDATE REG_RECORD SET DEPT = 'EE' WHERE NAME = 'Affan';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+SELECT * FROM REG_RECORD;
++---------+--------+------------+------+--------------------+
+| rollno  | name   | email      | dept | event              |
++---------+--------+------------+------+--------------------+
+| p160080 | Asad   | p160080@nu | EE   | GTA                |
+| P170016 | Ahmad  | p170016@nu | EE   | Debate Competition |
+| p170020 | Ahmer  | p170020@nu | CS   | Ludo               |
+| p180010 | Sahar  | p180010@nu | CS   | Sparlay            |
+| P180016 | Ammar  | p180016@nu | EE   | Tekken 5           |
+| p180030 | Momina | p180030@nu | CS   | Speed Programming  |
+| p180037 | Affan  | p180037    | EE   | Tekken 5           |
+| p180098 | Saad   | p180098@nu | CS   | Ludo               |
++---------+--------+------------+------+--------------------+
+
+ROLLBACK;
+Query OK, 0 rows affected (0.03 sec)
+
+SELECT * FROM REG_RECORD;
++---------+--------+------------+------+--------------------+
+| rollno  | name   | email      | dept | event              |
++---------+--------+------------+------+--------------------+
+| P170016 | Ahmad  | p170016@nu | EE   | Debate Competition |
+| p170020 | Ahmer  | p170020@nu | CS   | Ludo               |
+| p180010 | Ahmed  | p180010@nu | CS   | Sparlay            |
+| P180016 | Ammar  | p180016@nu | EE   | Tekken 5           |
+| p180030 | Momina | p180030@nu | CS   | Speed Programming  |
+| p180037 | Affan  | p180037    | CS   | Tekken 5           |
++---------+--------+------------+------+--------------------+
+
+INSERT INTO REG_RECORD VALUES('p170023','Abdulrehman','p170023@nu','CS','GTA');
+
+INSERT INTO REG_RECORD VALUES('p160029','Abdulraheem','p160029@nu','CS','Speed Programming');
+
+INSERT INTO REG_RECORD VALUES('p190001','Abdulqayyum','p190001@nu','EE','Sparlay');
+
+UPDATE REG_RECORD SET NAME = 'Ibrahim' WHERE ROLLNO = 'p190001';
+
+UPDATE REG_RECORD SET ROLLNO = 'p180013' WHERE NAME = 'Ammar';
+
+UPDATE REG_RECORD SET EMAIL = 'p180013@nu' WHERE NAME = 'Ammar';
+
+DELETE FROM REG_RECORD WHERE ROLLNO = 'p160029';
+
+DELETE FROM REG_RECORD WHERE EVENT = 'GTA';
+
+DELETE FROM REG_RECORD WHERE ROLLNO = 'p170016';
+
+SELECT * FROM REG_RECORD;
++---------+---------+------------+------+-------------------+
+| rollno  | name    | email      | dept | event             |
++---------+---------+------------+------+-------------------+
+| p170020 | Ahmer   | p170020@nu | CS   | Ludo              |
+| p180010 | Ahmed   | p180010@nu | CS   | Sparlay           |
+| p180013 | Ammar   | p180013@nu | EE   | Tekken 5          |
+| p180030 | Momina  | p180030@nu | CS   | Speed Programming |
+| p180037 | Affan   | p180037    | CS   | Tekken 5          |
+| p190001 | Ibrahim | p190001@nu | EE   | Sparlay           |
++---------+---------+------------+------+-------------------+
+
+ SAVEPOINT SVPT1;
+
+INSERT INTO REG_RECORD VALUES('p170065','John','p170065@nu','CS','Ludo');
+
+INSERT INTO REG_RECORD VALUES('p160043','Mahone','p160043@nu','EE','GTA');
+
+INSERT INTO REG_RECORD VALUES('p190039','Adam','p190039@nu','EE','Debate Competition');
+
+SELECT * FROM REG_RECORD;
++---------+---------+------------+------+--------------------+
+| rollno  | name    | email      | dept | event              |
++---------+---------+------------+------+--------------------+
+| p160043 | Mahone  | p160043@nu | EE   | GTA                |
+| p170020 | Ahmer   | p170020@nu | CS   | Ludo               |
+| p170065 | John    | p170065@nu | CS   | Ludo               |
+| p180010 | Ahmed   | p180010@nu | CS   | Sparlay            |
+| p180013 | Ammar   | p180013@nu | EE   | Tekken 5           |
+| p180030 | Momina  | p180030@nu | CS   | Speed Programming  |
+| p180037 | Affan   | p180037    | CS   | Tekken 5           |
+| p190001 | Ibrahim | p190001@nu | EE   | Sparlay            |
+| p190039 | Adam    | p190039@nu | EE   | Debate Competition |
++---------+---------+------------+------+--------------------+
+
+ROLLBACK TO SVPT1;
+
+SELECT * FROM REG_RECORD;
++---------+---------+------------+------+-------------------+
+| rollno  | name    | email      | dept | event             |
++---------+---------+------------+------+-------------------+
+| p170020 | Ahmer   | p170020@nu | CS   | Ludo              |
+| p180010 | Ahmed   | p180010@nu | CS   | Sparlay           |
+| p180013 | Ammar   | p180013@nu | EE   | Tekken 5          |
+| p180030 | Momina  | p180030@nu | CS   | Speed Programming |
+| p180037 | Affan   | p180037    | CS   | Tekken 5          |
+| p190001 | Ibrahim | p190001@nu | EE   | Sparlay           |
++---------+---------+------------+------+-------------------+

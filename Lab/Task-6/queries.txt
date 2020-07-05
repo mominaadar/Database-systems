@@ -1,0 +1,59 @@
+1. SELECT DISTINCT EMP_FNAME, EMP_LNAME FROM EMPLOYEE EMP,HOURS HRS WHERE EMP.EMP_NUM = HRS.EMP_NUM AND HOURS_PER_ATTRACT > (SELECT AVG(HOURS_PER_ATTRACT) FROM HOURS WHERE DATE_WORKED > '2007-05-01' AND DATE_WORKED < '2007-05-31');
++-----------+------------+
+| EMP_FNAME | EMP_LNAME  |
++-----------+------------+
+| Emma      | Calderdale |
+| Marshel   | Ricardo    |
+| Arif      | Arshad     |
+| Enrica    | Denver     |
+| Mirrelle  | Namowa     |
++-----------+------------+
+
+
+2. SELECT DISTINCT TP.PARK_CODE, PARK_NAME FROM THEMEPARK TP, TICKET TK WHERE TP.PARK_CODE = TK.PARK_CODE AND TICKET_PRICE > (SELECT AVG(TICKET_PRICE) FROM TICKET);
++-----------+---------------+
+| PARK_CODE | PARK_NAME     |
++-----------+---------------+
+| SP4533    | AdventurePort |
+| FR1001    | FairyLand     |
+| ZA1342    | GoldTown      |
+| UK3452    | PleasureLand  |
++-----------+---------------+
+
+
+3.  SELECT DISTINCT EMP_FNAME, EMP_LNAME, DATE_WORKED, (SELECT AVG(HOURS_PER_ATTRACT) FROM HOURS) AS AVERAGE, (HOURS_PER_ATTRACT - (SELECT AVG(HOURS_PER_ATTRACT) FROM HOURS))  AS DIFFERENCE FROM EMPLOYEE EMP,HOURS HR WHERE EMP.EMP_NUM = HR.EMP_NUM;
++-----------+------------+-------------+---------+------------+
+| EMP_FNAME | EMP_LNAME  | DATE_WORKED | AVERAGE | DIFFERENCE |
++-----------+------------+-------------+---------+------------+
+| Emma      | Calderdale | 2007-05-18  |  4.9091 |     1.0909 |
+| Emma      | Calderdale | 2007-05-20  |  4.9091 |     1.0909 |
+| Marshel   | Ricardo    | 2007-05-18  |  4.9091 |     1.0909 |
+| Arif      | Arshad     | 2007-05-23  |  4.9091 |    -1.9091 |
+| Arif      | Arshad     | 2007-05-21  |  4.9091 |     1.0909 |
+| Arif      | Arshad     | 2007-05-22  |  4.9091 |    -1.9091 |
+| Enrica    | Denver     | 2007-05-21  |  4.9091 |     1.0909 |
+| Enrica    | Denver     | 2007-05-22  |  4.9091 |     1.0909 |
+| Mirrelle  | Namowa     | 2007-05-18  |  4.9091 |    -1.9091 |
+| Mirrelle  | Namowa     | 2007-05-19  |  4.9091 |     1.0909 |
++-----------+------------+-------------+---------+------------+
+
+
+4. SELECT DISTINCT PARK_NAME FROM THEMEPARK TP, SALES SL WHERE TP.PARK_CODE = SL.PARK_CODE;
++--------------+
+| PARK_NAME    |
++--------------+
+| FairyLand    |
+| PleasureLand |
+| GoldTown     |
++--------------+
+
+
+5. SELECT DISTINCT PARK_NAME FROM THEMEPARK WHERE PARK_CODE NOT IN (SELECT PARK_CODE FROM SALES);
++---------------+
+| PARK_NAME     |
++---------------+
+| Efling        |
+| AdventurePort |
+| Labyrinthe    |
+| MiniLand      |
++---------------+
